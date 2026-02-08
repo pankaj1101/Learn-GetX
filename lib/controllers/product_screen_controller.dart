@@ -4,7 +4,7 @@ import 'package:learn_getx/repository/api_respository.dart';
 
 class ProductScreenController extends GetxController {
   RxList<Products> productList = <Products>[].obs;
-  final productRepo = ProductRespository();
+  final productRepo = ApiRespository();
 
   @override
   Future<void> onInit() async {
