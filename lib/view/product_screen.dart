@@ -51,8 +51,8 @@ class ProductScreen extends StatelessWidget {
                     final productItem = prodController.productList[index];
 
                     return ProductCard(
-                      imageUrl: productItem.imageUrl ?? "",
-                      name: productItem.name ?? "",
+                      imageUrl: productItem.images?[0] ?? "",
+                      name: productItem.title ?? "",
                       description: productItem.description ?? "",
                       price: productItem.price ?? 0,
                       rating: productItem.rating ?? 0,
