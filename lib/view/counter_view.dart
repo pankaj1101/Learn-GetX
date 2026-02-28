@@ -17,17 +17,8 @@ class CounterView extends StatelessWidget {
         //     style: TextStyle(fontSize: 30),
         //   );
         // }),
-        child: GetX<CounterController>(
-          init: CounterController(),
-          builder: (controller) {
-            return Text(
-              controller.counter.toString(),
-              style: TextStyle(fontSize: 30),
-            );
-          },
-        ),
-
-        // child: GetBuilder<CounterController>(
+        // child: GetX<CounterController>(
+        //   init: CounterController(),
         //   builder: (controller) {
         //     return Text(
         //       controller.counter.toString(),
@@ -35,6 +26,15 @@ class CounterView extends StatelessWidget {
         //     );
         //   },
         // ),
+
+        child: GetBuilder<CounterController>(
+          builder: (controller) {
+            return Text(
+              controller.counter.toString(),
+              style: TextStyle(fontSize: 30),
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: counterController.increment,

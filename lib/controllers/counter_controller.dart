@@ -6,15 +6,15 @@ import 'package:get/get.dart';
 // GetX - No reactive
 
 class CounterController extends GetxController {
-  RxInt counter = 0.obs;
-  // int counter = 0;
-
-  void increment() {
-    counter.value++;
-  }
+  // RxInt counter = 0.obs;
+  int counter = 0;
 
   // void increment() {
-  //   counter++;
-  //   update();
+  //   counter.value++;
   // }
+
+  void increment() {
+    counter++;
+    update();
+  }
 }
