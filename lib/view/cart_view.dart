@@ -35,7 +35,7 @@ class CartView extends StatelessWidget {
                       price: productItem['price'],
                       rating: productItem['rating'],
                       removeFromCart: () {
-                        prodController.removeToCart(productItem);
+                        // prodController.removeToCart(productItem);
                       },
                     );
                   },

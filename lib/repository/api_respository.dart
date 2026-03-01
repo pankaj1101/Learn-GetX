@@ -1,24 +1,30 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
+import 'package:learn_getx/core/api_endpoints.dart';
 import 'package:learn_getx/model/posts_model.dart';
 import 'package:learn_getx/model/product_model.dart';
 
 class ApiRespository {
-  Future<List<Products>> getProductData() async {
-    const String url = "https://dummyjson.com/products";
+  Future<ProductResponseModel> getProductData({
+    int size = 0,
+    int limit = 10,
+  }) async {
+    final String url = "${ApiEndpoints.products}?skip=$size&limit=$limit";
     try {
       final response = await get(Uri.parse(url));
       if (response.statusCode == 200) {
         // String - format - Convert
         final data = jsonDecode(response.body);
         final modelData = ProductResponseModel.fromJson(data);
-        return modelData.products ?? [];
+        return modelData;
       } else {
-        return [];
+        return ProductResponseModel();
       }
     } catch (e) {
-      return [];
+      debugPrint('line 21 :: Error $e');
+      return ProductResponseModel();
     }
   }
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:learn_getx/view/counter_view.dart';
-import 'package:learn_getx/view/posts_view.dart';
+import 'package:learn_getx/view/product_view_with_pagination.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: CounterView(),
+      home: ProductViewWithPagination(),
     );
   }
 }

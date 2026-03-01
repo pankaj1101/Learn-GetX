@@ -1,28 +1,70 @@
-import 'package:get/state_manager.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:learn_getx/model/product_model.dart';
 import 'package:learn_getx/repository/api_respository.dart';
 
 class ProductScreenController extends GetxController {
-  RxList<Products> productList = <Products>[].obs;
   final productRepo = ApiRespository();
 
-  @override
-  Future<void> onInit() async {
-    super.onInit();
-    productList.value = await productRepo.getProductData();
-    // await Future.delayed(Duration(milliseconds: 2000));
-    // productList.value = productData
-    //     .map((item) => Products.fromJson(item))
-    //     .toList();
-  }
-
+  RxList<Products> productList = <Products>[].obs;
   RxList<Map<String, dynamic>> cartList = <Map<String, dynamic>>[].obs;
 
-  void addToCart(Map<String, dynamic> item) {
-    cartList.value = [...cartList, item];
+  ScrollController scrollController = ScrollController();
+
+  int limit = 5;
+  int skip = 0;
+  int total = 0;
+
+  RxBool isLoadingMore = false.obs;
+  RxBool hasMore = true.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchProducts();
+
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+              scrollController.position.maxScrollExtent - 100 &&
+          !isLoadingMore.value &&
+          hasMore.value) {
+        fetchProducts();
+      }
+    });
   }
 
-  void removeToCart(Map<String, dynamic> item) {
-    cartList.remove(item);
+  Future<void> fetchProducts() async {
+    try {
+      isLoadingMore.value = true;
+      final response = await productRepo.getProductData(
+        size: skip,
+        limit: limit,
+      );
+      total = response.total!.toInt();
+
+      productList.addAll(response.products!);
+      skip += limit;
+      if (productList.length >= total) {
+        hasMore.value = false;
+      }
+
+      await Future.delayed(Duration(milliseconds: 100));
+
+      if (scrollController.hasClients &&
+          scrollController.position.maxScrollExtent == 0 &&
+          hasMore.value) {
+        fetchProducts();
+      }
+    } catch (e) {
+      debugPrint("Pagination Error: $e");
+    } finally {
+      isLoadingMore.value = false;
+    }
+  }
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+    super.onClose();
   }
 }
